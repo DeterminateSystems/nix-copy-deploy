@@ -11,3 +11,10 @@ terraform {
 provider "digitalocean" {
   token = var.do_token
 }
+
+resource "digitalocean_droplet" "nixos" {
+  image = "ubuntu-18-04-x64"
+  size  = "s-1vcpu-1gb"
+  name  = "nixos"
+  count = 3
+}

@@ -6,7 +6,11 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ terraform ];
+          packages = with pkgs; [
+            doctl
+            graphviz
+            terraform
+          ];
         };
       });
 }
