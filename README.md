@@ -11,7 +11,7 @@ cp .env.example .env
 direnv allow
 
 # Generate SSH keys
-ssh-keygen -f ./secrets/nix_copy_droplet -N '""'
+ssh-keygen -f ./secrets/nix_copy_droplet -N ''
 
 # Add private key to SSH agent
 eval "$(ssh-agent -s)"
