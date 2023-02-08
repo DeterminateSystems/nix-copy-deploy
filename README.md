@@ -3,19 +3,19 @@
 ## Setup
 
 ```shell
+cp .env.example .env
+
+# Set value for DIGITALOCEAN_TOKEN
+
 # Load Nix stuff
 direnv allow
 
 # Generate SSH keys
-ssh-keygen
+ssh-keygen -f ./secrets/nix_copy_droplet -N '""'
 
-# Select ./secrets
-# Provide password
-
+# Add private key to SSH agent
 eval "$(ssh-agent -s)"
-
-ssh-add ./secrets/id_rsa
-# Enter previously provided password
+ssh-add ./secrets/nix_copy_droplet
 
 # Create DigitalOcean droplets
 terraform apply -auto-approve

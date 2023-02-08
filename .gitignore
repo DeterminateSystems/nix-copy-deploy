@@ -5,7 +5,7 @@ terraform*
 
 # Secrets
 .env
-secrets/id_*
+secrets/nix_copy_droplet*
 
 # Graphviz artifacts
 graph.svg

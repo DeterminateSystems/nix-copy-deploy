@@ -14,13 +14,13 @@ provider "digitalocean" {
 
 resource "digitalocean_ssh_key" "default" {
   name       = "nixos-ssh-key"
-  public_key = file("./secrets/id_rsa.pub")
+  public_key = file("./secrets/${var.do_droplet_ssh_key_name}.pub")
 }
 
 resource "digitalocean_droplet" "nixos" {
   image    = "ubuntu-18-04-x64"
   size     = "s-1vcpu-1gb"
   name     = "nixos"
-  count    = 3
+  count    = var.do_num_droplets
   ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 }
