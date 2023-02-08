@@ -5,7 +5,7 @@ set -euo pipefail
 TF_STATE="./terraform.tfstate"
 
 if [ ! -f "$TF_STATE" ]; then
-  echo "No Terraform state file at $TF_STATE. Have you run `terraform apply`?"
+  echo "No Terraform state file at $TF_STATE. Have you run 'terraform apply'?"
   exit 1
 fi
 
