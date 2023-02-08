@@ -5,6 +5,7 @@ terraform*
 
 # Secrets
 .env
+secrets/id_*
 
 # Graphviz artifacts
 graph.svg
