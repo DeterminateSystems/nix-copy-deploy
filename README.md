@@ -21,5 +21,5 @@ ssh-add ./secrets/id_rsa
 terraform apply -auto-approve
 
 # Run deploy script
-./deploy.sh
+./scripts/deploy.sh
 ```

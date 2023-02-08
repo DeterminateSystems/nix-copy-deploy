@@ -10,10 +10,9 @@
             doctl
             graphviz
             jq
+            shellcheck
             terraform
           ];
         };
-
-        packages.default = pkgs.hello;
       });
 }
