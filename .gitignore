@@ -1,0 +1,4 @@
+# Terraform artifacts
+.terraform/
+.terraform.*
+terraform*
