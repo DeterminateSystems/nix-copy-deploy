@@ -9,8 +9,11 @@
           packages = with pkgs; [
             doctl
             graphviz
+            jq
             terraform
           ];
         };
+
+        packages.default = pkgs.hello;
       });
 }
