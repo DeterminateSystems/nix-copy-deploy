@@ -1,13 +1,9 @@
 #!/bin/bash
 
-DROPLETS=$(jq '.resources[] | select(.type == "digitalocean_droplet")' < terraform.tfstate)
-IPS=$(echo "${DROPLETS}" | jq '.resources[] | select(.type == "digitalocean_droplet") | .instances[].attributes.ipv4_address' | tr -d '"')
-NUM_DROPLETS="echo ${IPS} | jq '. | length'"
+IPS=$(jq '.resources[] | select(.type == "digitalocean_droplet") | .instances[].attributes.ipv4_address' < terraform.tfstate | tr -d '"')
 SYSTEM="x86_64-linux"
 FLAKE_PATH="nixpkgs#legacyPackages.${SYSTEM}.hello"
 SSH="ssh -o StrictHostKeyChecking=no"
-
-echo "Deploying hello package to ${NUM_DROPLETS} DigitalOcean droplets"
 
 for ip in $IPS; do
   echo "Installing Nix on ${ip}"
