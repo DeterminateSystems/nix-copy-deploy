@@ -7,8 +7,6 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            doctl
-            graphviz
             jq
             shellcheck
             terraform
