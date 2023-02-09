@@ -14,7 +14,7 @@ provider "digitalocean" {
 
 resource "digitalocean_ssh_key" "default" {
   name       = "nixos-ssh-key"
-  public_key = file("./secrets/${var.do_droplet_ssh_key_name}.pub")
+  public_key = file("./secrets/nix_copy_droplet.pub")
 }
 
 resource "digitalocean_droplet" "nixos" {

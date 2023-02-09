@@ -4,11 +4,5 @@ variable "do_token" {
 }
 
 variable "do_num_droplets" {
-  type    = number
-  default = 3
-}
-
-variable "do_droplet_ssh_key_name" {
-  type    = string
-  default = "nix_copy_droplet"
+  type = number
 }
