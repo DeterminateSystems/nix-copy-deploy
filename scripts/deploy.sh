@@ -27,7 +27,7 @@ for ip in $IPS; do
   target="root@${ip}"
 
   echo "Installing Nix on droplet at ${ip}"
-  #$SSH "${target}" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+  $SSH "${target}" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
 
   echo "Copying ${FLAKE_PATH} to ${target}"
   nix copy \
