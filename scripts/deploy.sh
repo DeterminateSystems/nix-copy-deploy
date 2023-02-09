@@ -24,8 +24,8 @@ SSH="ssh -o StrictHostKeyChecking=no"
 IPS=$(jq -f "${ROOT}"/scripts/get-ip-addresses.jq < "${TF_STATE}" | tr -d '"')
 
 for ip in $IPS; do
-  #echo "Installing Nix on ${ip}"
-  #$SSH root@"$ip" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+  echo "Installing Nix on ${ip}"
+  $SSH root@"$ip" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
 
   echo "Copying ${FLAKE_PATH} to ${ip}"
   nix copy --to ssh-ng://root@"${ip}" $FLAKE_PATH
