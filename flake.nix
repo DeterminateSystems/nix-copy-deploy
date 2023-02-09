@@ -12,5 +12,7 @@
             terraform
           ];
         };
+
+        packages.default = pkgs.ponysay;
       });
 }

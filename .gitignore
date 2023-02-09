@@ -12,3 +12,8 @@ graph.svg
 
 # Nix artifacts
 result
+
+
+# Added by cargo
+
+/target

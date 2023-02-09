@@ -15,7 +15,7 @@ fi
 SYSTEM="x86_64-linux"
 
 # The desired package (TODO: make this a local package)
-FLAKE_PATH="nixpkgs#legacyPackages.${SYSTEM}.hello"
+FLAKE_PATH=".#packages.${SYSTEM}.default"
 
 # SSH command
 SSH="ssh -o StrictHostKeyChecking=no"
@@ -24,14 +24,19 @@ SSH="ssh -o StrictHostKeyChecking=no"
 IPS=$(jq -f "${ROOT}"/scripts/get-ip-addresses.jq < "${TF_STATE}" | tr -d '"')
 
 for ip in $IPS; do
-  echo "Installing Nix on ${ip}"
-  $SSH root@"$ip" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+  target="root@${ip}"
 
-  echo "Copying ${FLAKE_PATH} to ${ip}"
-  nix copy --to ssh-ng://root@"${ip}" $FLAKE_PATH
+  echo "Installing Nix on droplet at ${ip}"
+  #$SSH "${target}" "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+
+  echo "Copying ${FLAKE_PATH} to ${target}"
+  nix copy \
+  --to ssh-ng://root@"${ip}" \
+  --substituters https://cache.nixos.org \
+  $FLAKE_PATH
 
   echo "Installing ${FLAKE_PATH} to profile"
-  $SSH root@"${ip}" nix profile install "$(nix path-info $FLAKE_PATH)"
+  $SSH "${target}" nix profile install "$(nix path-info $FLAKE_PATH)"
 
-  $SSH root@"${ip}" hello
+  $SSH "${target}" "echo 'Hello Nix' | ponysay"
 done
