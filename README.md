@@ -23,3 +23,9 @@ terraform apply -auto-approve
 # Run deploy script
 ./scripts/deploy.sh
 ```
+
+## Teardown
+
+```shell
+terraform apply -destroy -auto-approve
+```
