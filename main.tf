@@ -13,14 +13,14 @@ provider "digitalocean" {
 }
 
 resource "digitalocean_ssh_key" "default" {
-  name       = "nixos-ssh-key"
+  name       = "nix-copy-ssh-key"
   public_key = file("./secrets/nix_copy_droplet.pub")
 }
 
-resource "digitalocean_droplet" "nixos" {
-  image    = "ubuntu-18-04-x64"
-  size     = "s-1vcpu-1gb"
-  name     = "nixos"
+resource "digitalocean_droplet" "default" {
+  image    = var.do_droplet_image
+  size     = var.do_droplet_size
+  name     = "nix-copy-${count.index}"
   count    = var.do_num_droplets
   ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 }
