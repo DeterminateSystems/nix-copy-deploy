@@ -2,11 +2,13 @@
 
 This repo provides an example of using [`nix copy`][nix-copy] as a deployment tool. This Nix utility enables you to copy Nix [closures] from one machine to another, which provides a declarative alternative to tools like [rsync].
 
-This example involves standing up some [DigitalOcean] droplets using [Terraform] and then `nix copy`ing a Nix closure to those machines and running the copied program (in this case a simple [web server](./cmd/hello/main.go) written in [Go]). It isn't a particularly realistic example, of course, as the droplets aren't connected to the open Internet, but it does suggest how you could use a setup like this to copy and start up long-running processes serving real traffic.
+This example involves standing up some [DigitalOcean][do] droplets using [Terraform] and then `nix copy`ing a Nix closure to those machines and running the copied program (in this case a simple [web server](./cmd/hello/main.go) written in [Go]). It isn't a particularly realistic example, of course, as the droplets aren't connected to the open Internet, but it does suggest how you could use a setup like this to copy and start up long-running processes serving real traffic.
 
 The Terraform logic is in [`main.tf`](./main.tf) while the deployment script is in [`scripts/deploy.sh`](./scripts/deploy.sh).
 
-## Setup
+## Running this example
+
+### Setup
 
 Create a [DigitalOcean][do] account and get an API key. Make sure you have [Nix installed][install]. Then:
 
@@ -28,12 +30,26 @@ ssh-add ./secrets/nix_copy_droplet
 
 # Create DigitalOcean droplets
 terraform apply -auto-approve
+```
 
-# Run the deployment script
+### Deployment
+
+With the droplets deployed, you can run the [deployment script](./scripts/deploy.sh):
+
+```shell
 ./scripts/deploy.sh
 ```
 
-## Teardown
+This script does a few things:
+
+- It gathers a list of droplet IPs from the [Terraform] state file
+- It uses SSH to do a few things on each droplet:
+  - It installs Nix using [Nix Installer][nix-installer]
+  - It copies the closure for [ponysay] to the target machine's [Nix store][store]
+  - It adds the package to the target machine's user profile
+  - It pipes the string `Hello from nix copy!` to [ponysay], which outputs a lovely equine greeting
+
+### Teardown
 
 Once you've run the example, spin the droplets down:
 
@@ -46,6 +62,8 @@ terraform apply -destroy -auto-approve
 [go]: https://go.dev
 [install]: https://zero-to-nix.com/start/install
 [nix-copy]: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-copy
+[nix-installer]: https://github.com/DeterminateSystems/nix-installer
 [ponysay]: https://github.com/erkin/ponysay
 [rsync]: https://linux.die.net/man/1/rsync
+[store]: https://zero-to-nix.com/concepts/nix-store
 [terraform]: https://terraform.io

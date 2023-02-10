@@ -4,6 +4,8 @@ set -euo pipefail
 # Get root project directory
 ROOT=$(git rev-parse --show-toplevel)
 
+NIX_INSTALLATION_SCRIPT="curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+
 # Terraform state file
 TF_STATE="${ROOT}/terraform.tfstate"
 
@@ -18,6 +20,8 @@ SYSTEM="x86_64-linux"
 
 # The desired package
 FLAKE_PATH=".#packages.${SYSTEM}.default"
+
+# Get the Nix store path
 NIX_STORE_PATH="$(nix path-info $FLAKE_PATH)"
 
 # An array of droplet IPs drawn from the Terraform state file produced by `terraform apply`
@@ -31,7 +35,7 @@ for ip in $DROPLET_IPS; do
   run="ssh -o StrictHostKeyChecking=no ${target}"
 
   echo "Installing Nix on droplet at ${ip}"
-  $run "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm"
+  $run "${NIX_INSTALLATION_SCRIPT}"
 
   echo "Copying ${FLAKE_PATH} to ${target}"
   nix copy \
