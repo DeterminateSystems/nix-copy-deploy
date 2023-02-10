@@ -2,9 +2,11 @@
 
 This repo provides an example of using [`nix copy`][nix-copy] as a deployment tool. This Nix utility enables you to copy Nix [closures] from one machine to another, which provides a declarative alternative to tools like [rsync].
 
-This example involves standing up some [DigitalOcean][do] droplets using [Terraform] and then `nix copy`ing a Nix closure to those machines and running the copied program (in this case a simple [web server](./cmd/hello/main.go) written in [Go]). It isn't a particularly realistic example, of course, as the droplets aren't connected to the open Internet, but it does suggest how you could use a setup like this to copy and start up long-running processes serving real traffic.
+This example involves standing up some [DigitalOcean][do] droplets using [Terraform] and then `nix copy`ing a Nix closure to those machines and running the copied program (in this case [ponysay]). It isn't a particularly realistic example, of course, but it does suggest how you could use a setup like this to copy and start up long-running processes serving real traffic.
 
 The Terraform logic is in [`main.tf`](./main.tf) while the deployment script is in [`scripts/deploy.sh`](./scripts/deploy.sh).
+
+One of the core benefits of the approach you see here is that `nix copy` is [Nix store][store] aware. It copies only those dependencies that aren't yet present in the target machine's Nix store, while many tools need to install everything from scratch every time. In this example, each droplet has a "fresh" Nix store and the full ponysay closure needs to be copied over; but in a scenario where you were updating a target machine with some dependencies already present, the `nix copy` operation may be substantially more efficient than an equivalent non-Nix approach.
 
 ## Running this example
 
@@ -47,7 +49,7 @@ This script does a few things:
   - It installs Nix using [Nix Installer][nix-installer]
   - It copies the closure for [ponysay] to the target machine's [Nix store][store]
   - It adds the package to the target machine's user profile
-  - It pipes the string `Hello from nix copy!` to [ponysay], which outputs a lovely equine greeting
+  - It pipes the string `Hello from nix copy!` to [ponysay] on the target machine, which outputs a lovely equine greeting
 
 ### Teardown
 
