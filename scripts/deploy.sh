@@ -20,15 +20,13 @@ SYSTEM="x86_64-linux"
 FLAKE_PATH=".#packages.${SYSTEM}.default"
 NIX_STORE_PATH="$(nix path-info $FLAKE_PATH)"
 
-# SSH command
-
 # An array of droplet IPs drawn from the Terraform state file produced by `terraform apply`
-IPS=$(jq -f "${ROOT}"/scripts/get-ip-addresses.jq < "${TF_STATE}" | tr -d '"')
+DROPLET_IPS=$(jq -f "${ROOT}"/scripts/get-ip-addresses.jq < "${TF_STATE}" | tr -d '"')
 
 echo "Starting deployment"
 
 # Run the deployment script on each droplet
-for ip in $IPS; do
+for ip in $DROPLET_IPS; do
   target="root@${ip}"
   run="ssh -o StrictHostKeyChecking=no ${target}"
 
@@ -44,11 +42,5 @@ for ip in $IPS; do
   $run nix profile install "${NIX_STORE_PATH}"
 
   echo "Running the copied program"
-  $run "hello-nix-copy"
-
-  echo "Curling the running server"
-  $run "curl :8080"
-
-  echo "Stopping the server"
-  $run "pgrep -f hello-nix-copy | xargs kill -9"
+  $run "echo 'Hello from nix copy!' | ponysay"
 done
