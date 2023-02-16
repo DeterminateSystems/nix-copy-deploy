@@ -1,5 +1,7 @@
 # `nix copy` deployment example
 
+> **Warning**: this example project only works on `x86_64-linux` machines.
+
 This repo provides an example of using [`nix copy`][nix-copy] as a deployment tool. This Nix utility enables you to copy Nix [closures] from one machine to another, which provides a declarative alternative to tools like [rsync].
 
 This example involves standing up some [DigitalOcean][do] droplets using [Terraform] and then `nix copy`ing a Nix closure to those machines and running the copied program (in this case [ponysay]). It isn't a particularly realistic example, of course, but it does suggest how you could use a setup like this to copy and start up long-running processes serving real traffic.
