@@ -14,7 +14,15 @@ One of the core benefits of the approach you see here is that `nix copy` is [Nix
 
 ### Setup
 
-Create a [DigitalOcean][do] account and get an API key. Make sure you have [Nix installed][install]. Then:
+First, [install] Nix using the [Determinate Nix Installer][nix-installer]:
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+Then create a [DigitalOcean][do] account and get an API key.
+
+Then:
 
 ```shell
 # Provide environment variables
@@ -48,7 +56,7 @@ This script does a few things:
 
 - It gathers a list of droplet IPs from the [Terraform] state file
 - It uses SSH to do a few things on each droplet:
-  - It installs Nix using [Nix Installer][nix-installer]
+  - It installs Nix using the [Determinate Nix Installer][nix-installer]
   - It copies the closure for [ponysay] to the target machine's [Nix store][store]
   - It adds the package to the target machine's user profile
   - It pipes the string `Hello from nix copy!` to [ponysay] on the target machine, which outputs a lovely equine greeting
