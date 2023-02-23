@@ -12,7 +12,6 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          name = "foo";
           packages = with pkgs; [
             jq
             openssh
@@ -21,6 +20,8 @@
           ];
         };
 
-        packages.default = pkgs.ponysay;
+        packages.default = {
+          inherit (pkgs) ponysay;
+        };
       });
 }
