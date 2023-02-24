@@ -44,7 +44,7 @@ ssh-add ./secrets/nix_copy_droplet
 terraform apply -auto-approve
 ```
 
-### Deployment
+### Deploy
 
 With the droplets deployed, you can run the [deployment script](./scripts/deploy.sh):
 
@@ -61,7 +61,18 @@ This script does a few things:
   - It adds the package to the target machine's user profile
   - It pipes the string `Hello from nix copy!` to [ponysay] on the target machine, which outputs a lovely equine greeting
 
-### Teardown
+### Run
+
+Once you've deployed ponysay on each machine, you can run it on each of them:
+
+```shell
+./scripts/run.sh
+```
+
+This script uses SSH to pipe the string `Hello from nix copy!` to [ponysay] on the target machine, which outputs a lovely equine greeting. A different horse each time!
+
+
+### Tear down
 
 Once you've run the example, spin the droplets down:
 
