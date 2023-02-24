@@ -2,7 +2,7 @@
   description = "nix copy deployment example";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "nixpkgs/release-22.11";
   };
 
   outputs = { self, nixpkgs, flake-utils }:
@@ -20,8 +20,6 @@
           ];
         };
 
-        packages.default = {
-          inherit (pkgs) ponysay;
-        };
+        packages.default = pkgs.ponysay;
       });
 }
