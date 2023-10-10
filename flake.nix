@@ -3,7 +3,7 @@
 
   inputs = {
     # We'll tie Nixpkgs to a stable release
-    nixpkgs.url = "nixpkgs/release-22.11";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2211.433406.tar.gz";
   };
 
   outputs =
